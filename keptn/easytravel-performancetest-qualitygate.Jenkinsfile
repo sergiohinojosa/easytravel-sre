@@ -5,12 +5,10 @@ node {
     properties([
         parameters([
          string(defaultValue: 'performance', description: 'Name of your Keptn Project for Performance as a Self-Service', name: 'Project', trim: false), 
-         string(defaultValue: 'performancestage', description: 'Stage in your Keptn project used for Performance Feedback', name: 'Stage', trim: false), 
+         string(defaultValue: 'integration', description: 'Stage in your Keptn project used for Performance Feedback', name: 'Stage', trim: false), 
          string(defaultValue: 'evalservice', description: 'Servicename used to keep SLIs, SLOs, test files ...', name: 'Service', trim: false),
-         choice(choices: ['dynatrace', 'prometheus',''], description: 'Select which monitoring tool should be configured as SLI provider', name: 'Monitoring', trim: false),
          choice(choices: ['performance', 'performance_10', 'performance_50', 'performance_100', 'performance_long'], description: 'Test Strategy aka Workload, e.g: performance, performance_10, performance_50, performance_100, performance_long', name: 'TestStrategy', trim: false),
-         choice(choices: ['perftest','basic'], description: 'Decide which set of SLIs you want to evaluate. The sample comes with: basic and perftest', name: 'SLI'),
-         string(defaultValue: 'http://easytravel.demo.dynatrace.com', description: 'URI of the application you want to run a test against', name: 'DeploymentURI', trim: false),
+         string(defaultValue: 'http://easytravel.demo.dynatrace.com', description: 'URI of the EasyTravel Application you want to run a test against', name: 'DeploymentURI', trim: false),
          string(defaultValue: '60', description: 'How many minutes to wait until Keptn is done? 0 to not wait', name: 'WaitForResult'),
         ])
     ])
@@ -26,7 +24,7 @@ node {
         archiveArtifacts artifacts:'keptn/**/*.*'
 
         // Initialize the Keptn Project
-        keptn.keptnInit project:"${params.Project}", service:"${params.Service}", stage:"${params.Stage}", monitoring:"${monitoring}" // , shipyard:'shipyard.yaml'
+        keptn.keptnInit project:"${params.Project}", service:"${params.Service}", stage:"${params.Stage}", monitoring:"dynatrace" // , shipyard:'shipyard.yaml'
 
         // Upload all the files
         keptn.keptnAddResources('keptn/dynatrace.conf.yaml','dynatrace/dynatrace.conf.yaml')
@@ -35,7 +33,8 @@ node {
         keptn.keptnAddResources('keptn/jmeter/easytravel-classic-random-book.jmx','jmeter/easytravel-classic-random-book.jmx')
         keptn.keptnAddResources('keptn/jmeter/easytravel-users.txt','jmeter/easytravel-users.txt')
         keptn.keptnAddResources('keptn/jmeter/jmeter.conf.yaml','jmeter/jmeter.conf.yaml')
-    }x
+    }
+
     stage('Trigger Performance Test') {
         echo "Performance as a Self-Service: Triggering Keptn to execute Tests against ${params.DeploymentURI}"
 
@@ -44,6 +43,8 @@ node {
         String keptn_bridge = env.KEPTN_BRIDGE
         echo "Open Keptns Bridge: ${keptn_bridge}/trace/${keptnContext}"
     }
+
+
     stage('Wait for Result') {
         waitTime = 0
         if(params.WaitForResult?.isInteger()) {
