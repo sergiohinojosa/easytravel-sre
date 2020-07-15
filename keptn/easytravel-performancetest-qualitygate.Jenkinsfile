@@ -20,6 +20,7 @@ node {
 
         def response = httpRequest url: "${params.DeploymentURI}:8091/services/ConfigurationService/setPluginEnabled?name=${params.EasyTravelDeployment}&enabled=true",
             httpMode: 'GET',
+            timeout: 5,
             validResponseCodes: "202"
 
         println("Status: "+response.status)
@@ -101,9 +102,10 @@ node {
 
         def response = httpRequest 
             url: "${params.DeploymentURI}:8091/services/ConfigurationService/setPluginEnabled?name=${params.EasyTravelDeployment}&enabled=false"
-            httpMode: 'GET'
-            validResponseCodes: "202"
-
+            httpMode: 'GET',
+            validResponseCodes: "202",
+            timeout: 5
+        
         println("Status: "+response.status)
         println("Content: "+response.content)
 
