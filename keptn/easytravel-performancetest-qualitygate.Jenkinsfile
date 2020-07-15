@@ -4,14 +4,35 @@ def keptn = new sh.keptn.Keptn()
 node {
     properties([
         parameters([
-         string(defaultValue: 'performance', description: 'Name of your Keptn Project for Performance as a Self-Service', name: 'Project', trim: false), 
+         choice(choices: ['CPULoadJourneyService', 'DBSpammingAuthWithAppDeployment', 'LoginProblems', 'JourneyUpdateSlow', 'None'], description: 'Name of the Deployment (Bug) in Easytravel to enable', name: 'EasyTravelDeployment', trim: false), 
+         string(defaultValue: 'easytravel', description: 'Name of your Keptn Project for Performance as a Self-Service', name: 'Project', trim: false), 
          string(defaultValue: 'integration', description: 'Stage in your Keptn project used for Performance Feedback', name: 'Stage', trim: false), 
-         string(defaultValue: 'evalservice', description: 'Servicename used to keep SLIs, SLOs, test files ...', name: 'Service', trim: false),
+         string(defaultValue: 'frontend', description: 'Servicename (tag) used to keep SLIs, SLOs, test files ...', name: 'Service', trim: false),
          choice(choices: ['performance', 'performance_10', 'performance_50', 'performance_100', 'performance_long'], description: 'Test Strategy aka Workload, e.g: performance, performance_10, performance_50, performance_100, performance_long', name: 'TestStrategy', trim: false),
          string(defaultValue: 'http://easytravel.demo.dynatrace.com', description: 'URI of the EasyTravel Application you want to run a test against', name: 'DeploymentURI', trim: false),
          string(defaultValue: '60', description: 'How many minutes to wait until Keptn is done? 0 to not wait', name: 'WaitForResult'),
         ])
     ])
+
+    stage('Deploy EasyTravel Change') {
+
+        def response = httpRequest url: "${params.DeploymentURI}:8091/services/ConfigurationService/setPluginEnabled?name=${params.EasyTravelDeployment}&enabled=true",
+            httpMode: 'GET',
+            validResponseCodes: "202"
+
+        println("Status: "+response.status)
+        println("Content: "+response.content)
+
+        
+        /*
+        Some EasyTravel problems
+        CPULoadJourneyService
+        DBSpammingAuthWithAppDeployment
+        LoginProblems
+        JourneyUpdateSlow
+        https://community.dynatrace.com/community/pages/viewpage.action?title=Available+easyTravel+Problem+Patterns&spaceKey=DL        
+        */
+    }
 
     stage('Initialize Keptn') {
         // keptn.downloadFile('https://raw.githubusercontent.com/keptn-sandbox/performance-testing-as-selfservice-tutorial/master/shipyard.yaml', 'keptn/shipyard.yaml')
@@ -32,6 +53,8 @@ node {
         keptn.keptnAddResources('keptn/slo.yaml','slo.yaml')
         keptn.keptnAddResources('keptn/jmeter/easytravel-classic-random-book.jmx','jmeter/easytravel-classic-random-book.jmx')
         keptn.keptnAddResources('keptn/jmeter/easytravel-users.txt','jmeter/easytravel-users.txt')
+        //TODO How to add ressources to loadtest?
+        //keptn.keptnAddResources('keptn/jmeter/easytravel-users.jmx','jmeter/easytravel-users.jmx')
         keptn.keptnAddResources('keptn/jmeter/jmeter.conf.yaml','jmeter/jmeter.conf.yaml')
     }
 
@@ -70,5 +93,17 @@ node {
                 reportName           : "Keptn Result in Bridge"
             ]
         )
+    }
+
+    stage('Undeploy EasyTravel Change') {
+
+        def response = httpRequest 
+            url: "${params.DeploymentURI}:8091/services/ConfigurationService/setPluginEnabled?name=${params.EasyTravelDeployment}&enabled=false"
+            httpMode: 'GET'
+            validResponseCodes: "202"
+
+        println("Status: "+response.status)
+        println("Content: "+response.content)
+
     }
 }
