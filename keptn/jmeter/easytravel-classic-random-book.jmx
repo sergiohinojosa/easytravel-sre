@@ -39,7 +39,7 @@
           </elementProp>
           <elementProp name="PLATFORM" elementType="Argument">
             <stringProp name="Argument.name">PLATFORM</stringProp>
-            <stringProp name="Argument.value">${__P(PLATFORM,windows)}</stringProp>
+            <stringProp name="Argument.value">${__P(PLATFORM,kubernetes)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="DATE_ID" elementType="Argument">
@@ -65,6 +65,16 @@
           <elementProp name="LoopCount" elementType="Argument">
             <stringProp name="Argument.name">LoopCount</stringProp>
             <stringProp name="Argument.value">${__P(LoopCount,10)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="username" elementType="Argument">
+            <stringProp name="Argument.name">username</stringProp>
+            <stringProp name="Argument.value">${__P(username,maria)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="password" elementType="Argument">
+            <stringProp name="Argument.name">password</stringProp>
+            <stringProp name="Argument.value">${__P(password,maria)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -130,7 +140,7 @@
           </collectionProp>
         </HeaderManager>
         <hashTree/>
-        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="false">
           <stringProp name="TestPlan.comments">in the text file are 100 users. Useful for testing the Login module</stringProp>
           <stringProp name="delimiter">,</stringProp>
           <stringProp name="fileEncoding"></stringProp>
