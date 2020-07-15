@@ -1,5 +1,9 @@
 @Library('keptn-library')_
+
+//import sh.keptn.*
+//keptn = Keptn.instance
 def keptn = new sh.keptn.Keptn()
+
 
 node {
     properties([
@@ -62,7 +66,7 @@ node {
         echo "Performance as a Self-Service: Triggering Keptn to execute Tests against ${params.DeploymentURI}"
 
         // send deployment finished to trigger tests
-        def keptnContext = keptn.sendDeploymentFinishedEvent testStrategy:"${params.TestStrategy}", deploymentURI:"${params.DeploymentURI}" 
+        def keptnContext = sendDeploymentFinishedEventEasyTravel testStrategy:"${params.TestStrategy}", deploymentURI:"${params.DeploymentURI}" , problemPattern:"${params.EasyTravelDeployment}"
         String keptn_bridge = env.KEPTN_BRIDGE
         echo "Open Keptns Bridge: ${keptn_bridge}/trace/${keptnContext}"
     }
@@ -75,7 +79,8 @@ node {
 
         if(waitTime > 0) {
             echo "Waiting until Keptn is done and returns the results"
-            def result = keptn.waitForEvaluationDoneEvent setBuildResult:true, waitTime:waitTime
+            // Do not Break Pipeline so we undo the EasyTravel Deployment (Problem Pattern)
+            def result = keptn.waitForEvaluationDoneEvent setBuildResult:false, waitTime:waitTime
             echo "${result}"
         } else {
             echo "Not waiting for results. Please check the Keptns bridge for the details!"
@@ -94,7 +99,7 @@ node {
         )
     }
 
-    stage('Undeploy EasyTravel Change') {
+    stage('Rollback EasyTravel Deployment Change') {
 
         def response = httpRequest url: "${params.DeploymentURI}:8091/services/ConfigurationService/setPluginEnabled?name=${params.EasyTravelDeployment}&enabled=false",
             httpMode: 'GET',
@@ -103,6 +108,69 @@ node {
         
         println("Status: "+response.status)
         println("Content: "+response.content)
-
     }
+}
+
+/**
+ * sendDeploymentFinishedEvent(project, stage, service, deploymentURI, testStrategy [keptn_endpoint, keptn_api_token])
+ * Example: sendDeploymentFinishedEvent deploymentURI:"http://mysampleapp.mydomain.local" testStrategy:"performance"
+ * Will trigger a Continuous Performance Evaluation workflow in Keptn where Keptn will
+    -> first: trigger a test execution against that URI with the specified testStrategy
+    -> second: trigger an SLI/SLO evaluation!
+ */
+def sendDeploymentFinishedEventEasyTravel(Map args) {
+    def keptn = new sh.keptn.Keptn()
+    def keptnInit = keptn.keptnLoadFromInit(args)
+
+    /* String project, String stage, String service, String deploymentURI, String testStrategy */
+    String keptn_endpoint = args.containsKey('keptn_endpoint') ? args.keptn_endpoint : env.KEPTN_ENDPOINT
+    String keptn_api_token = args.containsKey('keptn_api_token') ? args.keptn_api_token : env.KEPTN_API_TOKEN
+
+    String project = keptnInit['project']
+    String stage = keptnInit['stage']
+    String service = keptnInit['service']
+    String deploymentURI = args.containsKey('deploymentURI') ? args.deploymentURI : ''
+    String testStrategy = args.containsKey('testStrategy') ? args.testStrategy : ''
+    String problemPattern = args.containsKey('problemPattern') ? args.problemPattern : ''
+
+    echo "Sending a Deployment Finished event to Keptn for ${project}.${stage}.${service} on ${deploymentURI} with testStrategy ${testStrategy}"
+
+    def requestBody = """{
+        |  "contenttype": "application/json",
+        |  "data": {
+        |    "deploymentURIPublic": "${deploymentURI}",
+        |    "teststrategy" : "${testStrategy}",
+        |    "project": "${project}",
+        |    "service": "${service}",
+        |    "stage": "${stage}",
+        |    "image" : "${JOB_NAME}",
+        |    "tag" : "${BUILD_NUMBER}",
+        |    "labels": {
+        |      "build" : "${BUILD_NUMBER}",
+        |      "jobname" : "${JOB_NAME}",
+        |      "problemPattern" : "${problemPattern}",
+        |      "joburl" : "${BUILD_URL}"
+        |    }
+        |  },
+        |  "source": "jenkins-library",
+        |  "specversion": "0.2",
+        |  "type": "sh.keptn.events.deployment-finished"
+        |}
+    """.stripMargin()
+
+    echo requestBody
+
+    def response = httpRequest contentType: 'APPLICATION_JSON',
+      customHeaders: [[maskValue: true, name: 'x-token', value: "${keptn_api_token}"]],
+      httpMode: 'POST',
+      requestBody: requestBody,
+      responseHandle: 'STRING',
+      url: "${keptn_endpoint}/v1/event",
+      validResponseCodes: '100:404',
+      ignoreSslErrors: true
+
+    // write response to keptn.context.json & add to artifacts
+    def keptnContext = keptn.writeKeptnContextFiles(response)
+
+    return keptnContext
 }
