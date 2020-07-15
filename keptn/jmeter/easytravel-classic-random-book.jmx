@@ -57,6 +57,16 @@
             <stringProp name="Argument.value">${__P(SERVER_URL,35-178-182-216.nip.io)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="VUCount" elementType="Argument">
+            <stringProp name="Argument.name">VUCount</stringProp>
+            <stringProp name="Argument.value">${__P(VUCount,50)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="LoopCount" elementType="Argument">
+            <stringProp name="Argument.name">LoopCount</stringProp>
+            <stringProp name="Argument.value">${__P(LoopCount,10)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
         </collectionProp>
       </elementProp>
       <stringProp name="TestPlan.user_define_classpath"></stringProp>
@@ -66,9 +76,9 @@
         <stringProp name="ThreadGroup.on_sample_error">stopthread</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">${__P(LoopCount,10)}</stringProp>
+          <stringProp name="LoopController.loops">${LoopCount}</stringProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">${__P(VUCount,50)}</stringProp>
+        <stringProp name="ThreadGroup.num_threads">${VUCount}</stringProp>
         <stringProp name="ThreadGroup.ramp_time">1</stringProp>
         <longProp name="ThreadGroup.start_time">1475750460000</longProp>
         <longProp name="ThreadGroup.end_time">1475750460000</longProp>
@@ -93,7 +103,7 @@
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
           <stringProp name="HTTPSampler.path"></stringProp>
-          <stringProp name="TestPlan.comments">(A way to test diferent scenarios or servers Test/Dev/QA/Prod) easytravel.demo.dynatrace.com   ubuntu7118.cloudapp.net TAG00944794147</stringProp>
+          <stringProp name="TestPlan.comments">(A way to test diferent scenarios or servers Test/Dev/QA/Prod) easytravel.demo.dynatrace.com  </stringProp>
           <stringProp name="HTTPSampler.concurrentPool">6</stringProp>
           <stringProp name="HTTPSampler.connect_timeout"></stringProp>
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
@@ -167,11 +177,18 @@ sampler.getHeaderManager().removeHeaderNamed(headerKey);
 //DATE_ID is just a TimeStamp (defined in the Test Plan)
 String DATEID = vars.get(&quot;DATE_ID&quot;);
 
+// LoopCount the amount of loops
+String LoopCount = vars.get(&quot;LoopCount&quot;);
+
+// VU Count (VirtualUser Count) same as Num of Threads
+// String VUCount = vars.get(&quot;VUCount&quot;);
+
+
 //LSN Load Script Name - name of the load testing script. This groups a set of test steps that make up a multi-step transaction (for example, an online purchase).
 headerValue.append(&quot;LSN=&quot;+groupName+&quot;;&quot;);
 
 // LTN The Load Test Name uniquely identifies a test execution (for example, 6h Load Test – June 25)
-headerValue.append(&quot;LTN=LoadTest via Keptn - Samples(&quot; + threadNum +&quot;) on &quot;+ DATEID+&quot;;&quot;);
+headerValue.append(&quot;LTN=LoadTest via JMeterService on Keptn - &quot; +groupName+&quot; - VU(&quot; + threadNum +&quot;) Loops(&quot;+LoopCount+&quot;) - &quot;+ DATEID+&quot;;&quot;);
 
 // Test Step Name is a logical test step within your load testing script (for example, Login or Add to cart.
 headerValue.append(&quot;TSN=&quot;+samplerName+&quot;;&quot;);
@@ -182,11 +199,9 @@ headerValue.append(&quot;AN= &quot; + JMeterUtils.getProperty(&quot;username&quo
 //Virtual User ID of the unique user who sent the request.
 headerValue.append(&quot;VU=&quot;+ctx.getThreadNum()+&quot;;&quot;);
 
-headerValue.append(&quot;SI=JMeter Keptn Service;&quot;);
+headerValue.append(&quot;SI=JMeter Service on Keptn;&quot;);
 
-sampler.getHeaderManager().add(new org.apache.jmeter.protocol.http.control.Header(headerKey, headerValue.toString()));
-
-</stringProp>
+sampler.getHeaderManager().add(new org.apache.jmeter.protocol.http.control.Header(headerKey, headerValue.toString()));</stringProp>
           <stringProp name="TestPlan.comments">this will run for every sampler</stringProp>
         </BeanShellPreProcessor>
         <hashTree/>
