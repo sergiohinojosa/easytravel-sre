@@ -4,10 +4,10 @@ def keptn = new sh.keptn.Keptn()
 node {
     properties([
         parameters([
-         choice(choices: ['None', 'CPULoadJourneyService', 'DBSpammingAuthWithAppDeployment', 'LoginProblems', 'JourneyUpdateSlow'], description: 'Name of the Deployment (Bug) in Easytravel to enable', name: 'EasyTravelDeployment', trim: false), 
+         choice(choices: ['None', 'CPULoadJourneyService', 'DBSpammingAuthWithAppDeployment', 'LoginProblems', 'JourneyUpdateSlow', 'CreditCardCheckError500'], description: 'Name of the Deployment (Bug) in Easytravel to enable', name: 'EasyTravelDeployment', trim: false), 
          string(defaultValue: 'easytravel', description: 'Name of your Keptn Project for Performance as a Self-Service', name: 'Project', trim: false), 
          string(defaultValue: 'integration', description: 'Stage in your Keptn project used for Performance Feedback', name: 'Stage', trim: false), 
-         string(defaultValue: 'frontend', description: 'Servicename (tag) used to keep SLIs, SLOs, test files ...', name: 'Service', trim: false),
+         string(defaultValue: 'frontend-classic', description: 'Servicename (tag) used to keep SLIs, SLOs, test files ...(in Classic ET is the easyTravel Customer Frontend', name: 'Service', trim: false),
          choice(choices: ['performance', 'performance_10', 'performance_50', 'performance_100', 'performance_long'], description: 'Test Strategy aka Workload, e.g: performance, performance_10, performance_50, performance_100, performance_long', name: 'TestStrategy', trim: false),
          string(defaultValue: 'http://easytravel.demo.dynatrace.com', description: 'URI of the EasyTravel Application you want to run a test against', name: 'DeploymentURI', trim: false),
          string(defaultValue: '60', description: 'How many minutes to wait until Keptn is done? 0 to not wait', name: 'WaitForResult'),
@@ -17,7 +17,6 @@ node {
     stage('Deploy EasyTravel Change') {
 
         //TODO Push Deployment Event to Dynatrace?
-
         def response = httpRequest url: "${params.DeploymentURI}:8091/services/ConfigurationService/setPluginEnabled?name=${params.EasyTravelDeployment}&enabled=true",
             httpMode: 'GET',
             timeout: 5,
@@ -25,8 +24,6 @@ node {
 
         println("Status: "+response.status)
         println("Content: "+response.content)
-
-        
         /*
         Some EasyTravel problems
         CPULoadJourneyService
@@ -69,7 +66,6 @@ node {
         String keptn_bridge = env.KEPTN_BRIDGE
         echo "Open Keptns Bridge: ${keptn_bridge}/trace/${keptnContext}"
     }
-
 
     stage('Wait for Result') {
         waitTime = 0

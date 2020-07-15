@@ -44,7 +44,7 @@
           </elementProp>
           <elementProp name="DATE_ID" elementType="Argument">
             <stringProp name="Argument.name">DATE_ID</stringProp>
-            <stringProp name="Argument.value">${__time(d MMM yyyy hh:mm:ss)}</stringProp>
+            <stringProp name="Argument.value">${__time(d MMM yyyy HH:mm:ss)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="PORT" elementType="Argument">
@@ -54,7 +54,7 @@
           </elementProp>
           <elementProp name="SERVER_URL" elementType="Argument">
             <stringProp name="Argument.name">SERVER_URL</stringProp>
-            <stringProp name="Argument.value">${__P(SERVER_URL,35-178-182-216.nip.io)}</stringProp>
+            <stringProp name="Argument.value">${__P(SERVER_URL,easytravel.demo.dynatrace.com)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="VUCount" elementType="Argument">
