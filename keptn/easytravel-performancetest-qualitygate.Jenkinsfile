@@ -100,8 +100,7 @@ node {
 
     stage('Undeploy EasyTravel Change') {
 
-        def response = httpRequest 
-            url: "${params.DeploymentURI}:8091/services/ConfigurationService/setPluginEnabled?name=${params.EasyTravelDeployment}&enabled=false"
+        def response = httpRequest url: "${params.DeploymentURI}:8091/services/ConfigurationService/setPluginEnabled?name=${params.EasyTravelDeployment}&enabled=false",
             httpMode: 'GET',
             validResponseCodes: "202",
             timeout: 5
