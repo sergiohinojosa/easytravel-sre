@@ -29,15 +29,7 @@ node {
         println("Status: "+response.status)
         println("Content: "+response.content)
         /*
-                 def now = new Date()
-            println(now.format("yyMMdd.HHmm", TimeZone.getTimeZone('UTC')))
-            println(now.format("HH", TimeZone.getTimeZone('UTC')))
-
-        Some EasyTravel problems
-        CPULoadJourneyService
-        DBSpammingAuthWithAppDeployment
-        LoginProblems
-        JourneyUpdateSlow
+        More about EasyTravel problems
         https://community.dynatrace.com/community/pages/viewpage.action?title=Available+easyTravel+Problem+Patterns&spaceKey=DL        
         */
     }
@@ -62,6 +54,7 @@ node {
         keptn.keptnAddResources('keptn/jmeter/easytravel-classic-random-book.jmx','jmeter/easytravel-classic-random-book.jmx')
         keptn.keptnAddResources('keptn/jmeter/easytravel-users.txt','jmeter/easytravel-users.txt')
         //TODO How to add ressources to loadtest?
+        //https://github.com/keptn/enhancement-proposals/issues/21
         //keptn.keptnAddResources('keptn/jmeter/easytravel-users.jmx','jmeter/easytravel-users.jmx')
         keptn.keptnAddResources('keptn/jmeter/jmeter.conf.yaml','jmeter/jmeter.conf.yaml')
     }
