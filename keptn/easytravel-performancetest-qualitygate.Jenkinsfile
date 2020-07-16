@@ -29,6 +29,10 @@ node {
         println("Status: "+response.status)
         println("Content: "+response.content)
         /*
+                 def now = new Date()
+            println(now.format("yyMMdd.HHmm", TimeZone.getTimeZone('UTC')))
+            println(now.format("HH", TimeZone.getTimeZone('UTC')))
+
         Some EasyTravel problems
         CPULoadJourneyService
         DBSpammingAuthWithAppDeployment

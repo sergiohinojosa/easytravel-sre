@@ -54,7 +54,7 @@
           </elementProp>
           <elementProp name="SERVER_URL" elementType="Argument">
             <stringProp name="Argument.name">SERVER_URL</stringProp>
-            <stringProp name="Argument.value">${__P(SERVER_URL,easytravel.demo.dynatrace.com)}</stringProp>
+            <stringProp name="Argument.value">${__P(SERVER_URL,35-178-182-216.nip.io)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="VUCount" elementType="Argument">
@@ -77,6 +77,11 @@
             <stringProp name="Argument.value">${__P(password,maria)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="ThinkTime" elementType="Argument">
+            <stringProp name="Argument.name">ThinkTime</stringProp>
+            <stringProp name="Argument.value">${__P(ThinkTime,250)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
         </collectionProp>
       </elementProp>
       <stringProp name="TestPlan.user_define_classpath"></stringProp>
@@ -89,13 +94,15 @@
           <stringProp name="LoopController.loops">${LoopCount}</stringProp>
         </elementProp>
         <stringProp name="ThreadGroup.num_threads">${VUCount}</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">${VUCount}</stringProp>
         <longProp name="ThreadGroup.start_time">1475750460000</longProp>
         <longProp name="ThreadGroup.end_time">1475750460000</longProp>
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
         <stringProp name="ThreadGroup.duration"></stringProp>
         <stringProp name="ThreadGroup.delay"></stringProp>
-        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">false</boolProp>
+        <stringProp name="TestPlan.comments">the Rmap up will divide the amount of seconds by the number of users</stringProp>
+        <boolProp name="ThreadGroup.delayedStart">true</boolProp>
       </ThreadGroup>
       <hashTree>
         <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="true">
@@ -301,13 +308,13 @@ print(&quot;iWindow: &quot; + vars.get(&quot;iWindow&quot;));
 print(&quot;iView: &quot; + vars.get(&quot;iView&quot;));</stringProp>
           </BeanShellPostProcessor>
           <hashTree/>
-          <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Uniform Random Timer" enabled="true">
+          <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Uniform Random Timer" enabled="false">
             <stringProp name="ConstantTimer.delay">100</stringProp>
             <stringProp name="RandomTimer.range">200.0</stringProp>
           </UniformRandomTimer>
           <hashTree/>
           <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Default Think Time" enabled="true">
-            <stringProp name="ConstantTimer.delay">{__P(ThinkTime,${DefaultThinkTime})}</stringProp>
+            <stringProp name="ConstantTimer.delay">${ThinkTime}</stringProp>
           </ConstantTimer>
           <hashTree/>
         </hashTree>
@@ -348,13 +355,13 @@ print(&quot;iView: &quot; + vars.get(&quot;iView&quot;));</stringProp>
             <stringProp name="TestPlan.comments">Match No. 0 because we want a random journey</stringProp>
           </RegexExtractor>
           <hashTree/>
-          <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Uniform Random Timer" enabled="true">
+          <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Uniform Random Timer" enabled="false">
             <stringProp name="ConstantTimer.delay">100</stringProp>
             <stringProp name="RandomTimer.range">300.0</stringProp>
           </UniformRandomTimer>
           <hashTree/>
           <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Default Think Time" enabled="true">
-            <stringProp name="ConstantTimer.delay">{__P(ThinkTime,${DefaultThinkTime})}</stringProp>
+            <stringProp name="ConstantTimer.delay">${ThinkTime}</stringProp>
           </ConstantTimer>
           <hashTree/>
         </hashTree>
@@ -617,13 +624,13 @@ sampler.getHeaderManager().add(new org.apache.jmeter.protocol.http.control.Heade
             <stringProp name="Assertion.custom_message"></stringProp>
           </ResponseAssertion>
           <hashTree/>
-          <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Uniform Random Timer" enabled="true">
+          <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Uniform Random Timer" enabled="false">
             <stringProp name="ConstantTimer.delay">200</stringProp>
             <stringProp name="RandomTimer.range">300.0</stringProp>
           </UniformRandomTimer>
           <hashTree/>
           <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Default Think Time" enabled="true">
-            <stringProp name="ConstantTimer.delay">{__P(ThinkTime,${DefaultThinkTime})}</stringProp>
+            <stringProp name="ConstantTimer.delay">${ThinkTime}</stringProp>
           </ConstantTimer>
           <hashTree/>
         </hashTree>
@@ -919,7 +926,7 @@ sampler.getHeaderManager().add(new org.apache.jmeter.protocol.http.control.Heade
           </ResponseAssertion>
           <hashTree/>
           <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Default Think Time" enabled="true">
-            <stringProp name="ConstantTimer.delay">{__P(ThinkTime,${DefaultThinkTime})}</stringProp>
+            <stringProp name="ConstantTimer.delay">${ThinkTime}</stringProp>
           </ConstantTimer>
           <hashTree/>
         </hashTree>
@@ -968,13 +975,13 @@ sampler.getHeaderManager().add(new org.apache.jmeter.protocol.http.control.Heade
             <stringProp name="RegexExtractor.match_number">1</stringProp>
           </RegexExtractor>
           <hashTree/>
-          <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Uniform Random Timer" enabled="true">
+          <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Uniform Random Timer" enabled="false">
             <stringProp name="ConstantTimer.delay">200</stringProp>
             <stringProp name="RandomTimer.range">300.0</stringProp>
           </UniformRandomTimer>
           <hashTree/>
           <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Default Think Time" enabled="true">
-            <stringProp name="ConstantTimer.delay">{__P(ThinkTime,${DefaultThinkTime})}</stringProp>
+            <stringProp name="ConstantTimer.delay">${ThinkTime}</stringProp>
           </ConstantTimer>
           <hashTree/>
         </hashTree>
@@ -1033,13 +1040,13 @@ sampler.getHeaderManager().add(new org.apache.jmeter.protocol.http.control.Heade
             <stringProp name="RegexExtractor.match_number">1</stringProp>
           </RegexExtractor>
           <hashTree/>
-          <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Uniform Random Timer" enabled="true">
+          <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Uniform Random Timer" enabled="false">
             <stringProp name="ConstantTimer.delay">200</stringProp>
             <stringProp name="RandomTimer.range">300.0</stringProp>
           </UniformRandomTimer>
           <hashTree/>
           <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Default Think Time" enabled="true">
-            <stringProp name="ConstantTimer.delay">{__P(ThinkTime,${DefaultThinkTime})}</stringProp>
+            <stringProp name="ConstantTimer.delay">${ThinkTime}</stringProp>
           </ConstantTimer>
           <hashTree/>
         </hashTree>
@@ -1314,7 +1321,7 @@ sampler.getHeaderManager().add(new org.apache.jmeter.protocol.http.control.Heade
           </RegexExtractor>
           <hashTree/>
           <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Default Think Time" enabled="true">
-            <stringProp name="ConstantTimer.delay">{__P(ThinkTime,${DefaultThinkTime})}</stringProp>
+            <stringProp name="ConstantTimer.delay">${ThinkTime}</stringProp>
           </ConstantTimer>
           <hashTree/>
         </hashTree>
@@ -1544,7 +1551,7 @@ sampler.getHeaderManager().add(new org.apache.jmeter.protocol.http.control.Heade
             <stringProp name="TestPlan.comments">&lt;input type=&quot;hidden&quot; name=&quot;javax\.faces\.ViewState&quot; id=&quot;javax\.faces\.ViewState&quot; value=&quot;([^&quot;]+)&quot;.*/&gt;</stringProp>
           </RegexExtractor>
           <hashTree/>
-          <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Uniform Random Timer" enabled="true">
+          <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Uniform Random Timer" enabled="false">
             <stringProp name="ConstantTimer.delay">200</stringProp>
             <stringProp name="RandomTimer.range">300.0</stringProp>
           </UniformRandomTimer>
@@ -1560,7 +1567,7 @@ sampler.getHeaderManager().add(new org.apache.jmeter.protocol.http.control.Heade
           </ResponseAssertion>
           <hashTree/>
           <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Default Think Time" enabled="true">
-            <stringProp name="ConstantTimer.delay">{__P(ThinkTime,${DefaultThinkTime})}</stringProp>
+            <stringProp name="ConstantTimer.delay">${ThinkTime}</stringProp>
           </ConstantTimer>
           <hashTree/>
         </hashTree>
@@ -1745,7 +1752,7 @@ sampler.getHeaderManager().add(new org.apache.jmeter.protocol.http.control.Heade
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
         </HTTPSamplerProxy>
         <hashTree>
-          <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Uniform Random Timer" enabled="true">
+          <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Uniform Random Timer" enabled="false">
             <stringProp name="ConstantTimer.delay">200</stringProp>
             <stringProp name="RandomTimer.range">300.0</stringProp>
           </UniformRandomTimer>
@@ -1761,7 +1768,7 @@ sampler.getHeaderManager().add(new org.apache.jmeter.protocol.http.control.Heade
           </ResponseAssertion>
           <hashTree/>
           <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Default Think Time" enabled="true">
-            <stringProp name="ConstantTimer.delay">{__P(ThinkTime,${DefaultThinkTime})}</stringProp>
+            <stringProp name="ConstantTimer.delay">${ThinkTime}</stringProp>
           </ConstantTimer>
           <hashTree/>
         </hashTree>
