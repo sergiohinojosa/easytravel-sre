@@ -18,7 +18,7 @@ pipeline {
                [ $class: 'StringParameterValue', name: 'Stage',value: "integration" ],
                [ $class: 'StringParameterValue', name: 'Service',value: "frontend-classic" ],
                [ $class: 'StringParameterValue', name: 'TestStrategy',value: "performance_long" ],
-               [ $class: 'StringParameterValue', name: 'DeploymentURI',value: "http://35-178-182-216.nip.io" ],
+               [ $class: 'StringParameterValue', name: 'DeploymentURI',value: "http://easytravel.dynatrace.com" ],
            
         
             // etc.
