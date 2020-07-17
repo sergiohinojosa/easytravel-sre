@@ -8,20 +8,20 @@ workloads:
     acceptederrorrate: 1.0
     script: jmeter/easytravel-classic-random-book.jmx
   - teststrategy: performance_100
-    vuser: 25
-    loopcount: 100
+    vuser: 10
+    loopcount: 500
     thinktime: 250
     acceptederrorrate: 1.0
     script: jmeter/easytravel-classic-random-book.jmx
   - teststrategy: performance_50
-    vuser: 25
-    loopcount: 50
+    vuser: 10
+    loopcount: 200
     thinktime: 250
     acceptederrorrate: 1.0
     script: jmeter/easytravel-classic-random-book.jmx
   - teststrategy: performance_10
-    vuser: 25
-    loopcount: 20
+    vuser: 10
+    loopcount: 100
     thinktime: 250
     acceptederrorrate: 1.0
     script: jmeter/easytravel-classic-random-book.jmx
