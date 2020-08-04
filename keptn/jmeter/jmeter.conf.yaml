@@ -9,13 +9,13 @@ workloads:
     script: jmeter/easytravel-classic-random-book.jmx
   - teststrategy: performance_100
     vuser: 10
-    loopcount: 500
+    loopcount: 200
     thinktime: 250
     acceptederrorrate: 1.0
     script: jmeter/easytravel-classic-random-book.jmx
   - teststrategy: performance_50
     vuser: 10
-    loopcount: 200
+    loopcount: 150
     thinktime: 250
     acceptederrorrate: 1.0
     script: jmeter/easytravel-classic-random-book.jmx
