@@ -13,10 +13,13 @@
         warning:     # if the response time is below 800ms, the result should be a warning
           - criteria:
               - "<=800"
+        weight: 2
+        key_sli: true
       - sli: throughput_svc
         pass:
           - criteria:
-            - "> 2000" # at least 1000 Calls for a basic test to pass.
+            - "> 10000" # at least 10000 Calls for a basic test to pass.
+        key_sli: true
       - sli: error_count
         weight: 2
         pass:
@@ -25,6 +28,7 @@
         warning:
           - criteria:
               - "<=2" # more than 2 failed transactions is failed
+        key_sli: true
       - sli: rt_svc_p50
       - sli: rt_svc_p90
         pass:
@@ -69,5 +73,5 @@
           - criteria:
               - ">+5%"
     total_score:
-      pass: "70%"
-      warning: "50%"
+      pass: "80%"
+      warning: "70%"
