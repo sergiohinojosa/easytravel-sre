@@ -8,7 +8,8 @@
       - sli: rt_svc_p95
         pass:        # pass if (relative change <= 10% AND absolute value is < 1500)
           - criteria:
-              - "<=+10%" # relative values require a prefixed sign (plus or minus)
+        #     - "<=+10%" # relative values require a prefixed sign (plus or minus)
+        # Percentage comment out due metric validation regardless of build break
               - "<1500"   # absolute values only require a logical operator, pass if 95th percentile lower than 1,5 sec
         warning:     # if the response time is above 1,5s, the result should be a warning
           - criteria:
@@ -33,7 +34,7 @@
       - sli: rt_svc_p90
         pass:
           - criteria:
-              - "<=+10%"
+              - "<=1500" # 
         warning:
           - criteria:
               - "<=+50%"   
