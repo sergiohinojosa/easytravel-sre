@@ -39,7 +39,7 @@ node {
        println("And the problemPattern is:" + problemPattern)
 
        build(
-             job: 'easytravel-deployment',
+             job: 'easytravel-continuous-deployment',
              parameters: [
                [ $class: 'StringParameterValue', name: 'EasyTravelDeployment',value: "${problemPattern}" ],
                [ $class: 'StringParameterValue', name: 'Project',value: "easytravel" ],
