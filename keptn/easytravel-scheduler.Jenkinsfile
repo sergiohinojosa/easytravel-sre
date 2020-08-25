@@ -45,7 +45,7 @@ node {
                [ $class: 'StringParameterValue', name: 'Project',value: "easytravel" ],
                [ $class: 'StringParameterValue', name: 'Stage',value: "integration" ],
                [ $class: 'StringParameterValue', name: 'Service',value: "frontend-classic" ],
-               [ $class: 'StringParameterValue', name: 'TestStrategy',value: "performance_100" ],
+               [ $class: 'StringParameterValue', name: 'TestStrategy',value: "performance_10" ],
                [ $class: 'StringParameterValue', name: 'DeploymentURI',value: "${params.DeploymentURI}" ]
              ],
             )
