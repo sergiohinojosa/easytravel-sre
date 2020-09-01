@@ -29,6 +29,8 @@ keptn
  │   └── jmeter.conf.yaml                                    JMeter configuration for Keptn
  ├── sli.yaml                                                SLI definitions for the project   
  └── slo.yaml                                                SLO definitions for the project   
+
+ deployment_schedule.md                                      Overview of the deployment schedule for easytravel CET.
 ```
 
 
