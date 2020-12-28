@@ -101,7 +101,7 @@
         <stringProp name="ThreadGroup.duration"></stringProp>
         <stringProp name="ThreadGroup.delay"></stringProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">false</boolProp>
-        <stringProp name="TestPlan.comments">the Rmap up will divide the amount of seconds by the number of users</stringProp>
+        <stringProp name="TestPlan.comments">the Ramp-up will divide the amount of seconds by the number of users</stringProp>
         <boolProp name="ThreadGroup.delayedStart">true</boolProp>
       </ThreadGroup>
       <hashTree>
